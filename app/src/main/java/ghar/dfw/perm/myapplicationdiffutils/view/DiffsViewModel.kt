@@ -1,40 +1,39 @@
 package ghar.dfw.perm.myapplicationdiffutils.view
 
+
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ghar.dfw.perm.myapplicationdiffutils.BuildConfig
-import ghar.dfw.perm.myapplicationdiffutils.api.TMDBApi
-import ghar.dfw.perm.myapplicationdiffutils.model.data.Movies
+import ghar.dfw.perm.myapplicationdiffutils.api.WeatherApi
+import ghar.dfw.perm.myapplicationdiffutils.model.data.WeatherInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
 import retrofit2.Response
 import timber.log.Timber
 
-class DiffsViewModel:ViewModel() {
+class DiffsViewModel : ViewModel() {
 
-    private val _moviesResponse = MutableLiveData<Response<Movies>>()
-    val moviesResponse : LiveData<Response<Movies>>
-        get() = _moviesResponse
+    private val _weatherResponse = MutableLiveData<Response<WeatherInfo>>()
+    val weatherResponse: LiveData<Response<WeatherInfo>>
+        get() = _weatherResponse
 
     suspend fun networkCall() {
         withContext(Dispatchers.IO) {
             try {
-                val result = TMDBApi.tmdbApiService.getMovies(api_key = BuildConfig.MOVIES_API_KEY)
-                _moviesResponse.value = TMDBApi.tmdbApiService.getMovies(api_key = BuildConfig.MOVIES_API_KEY)
-//                Timber.i("original data: ${moviesResponse?.body()?.original_title}")
-                result.body()?.production_companies?.forEach {
-                    Timber.i("movies-data in call: $it")
-                }
-
+                _weatherResponse.postValue(
+                    WeatherApi.weatherApiService.getWeatherData(
+                        BuildConfig.WEATHER_API_KEY,
+                        location = "Dallas",
+                        aqiChoice = "yes"
+                    )
+                )
+                Log.v("weather-data:", "${_weatherResponse.value?.body()}")
             } catch (exception: Exception) {
-                Timber.e("error getting asteroid-data from server: ${exception.printStackTrace()}")
+                Timber.e("error getting movies-data from server: ${exception.printStackTrace()}")
                 exception.printStackTrace()
             }
         }
-
     }
-
-
 }

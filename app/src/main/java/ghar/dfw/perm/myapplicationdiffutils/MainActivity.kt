@@ -2,11 +2,9 @@ package ghar.dfw.perm.myapplicationdiffutils
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ghar.dfw.perm.myapplicationdiffutils.pure.utils.Classes
@@ -15,12 +13,10 @@ import ghar.dfw.perm.myapplicationdiffutils.view.DiffsViewModel
 import ghar.dfw.perm.myapplicationdiffutils.view.SampleListAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import kotlin.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity() : AppCompatActivity() {
 
-  private lateinit var diffUtilViewModel: DiffsViewModel
+    private lateinit var diffUtilViewModel: DiffsViewModel
 
     private val list01 = listOf(
         SampleListItem(1, "h10", "h100"),
@@ -35,8 +31,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        diffUtilViewModel = ViewModelProvider(this).get(DiffsViewModel::class.java)
+
         /** ---------------------- Utils ---------------------------- **/
-        /** --------------------------------------------------------- **/
         /** --------------------------------------------------------- **/
         val util = Util()
         val accumList = util.getCompositeList(list01, list12)
@@ -48,17 +45,6 @@ class MainActivity : AppCompatActivity() {
             Classes("LM", "White", 2009),
             Classes("LM1", "White1", 2019)
         )
-
-        // Collections
-//        println(employees.minByOrNull ({ e -> e.startYear }))
-//        println(employees.minByOrNull ({ e:Classes -> e.startYear }))   // same as above
-//        println(employees.minByOrNull { it.startYear })   // same as above
-
-        iterateClasses(employees, 3)
-        println(count100With())
-        println(count10Apply())
-
-        /** --------------------------------------------------------- **/
         /** --------------------------------------------------------- **/
         /** ---------------------Utils END HERE  -------------------- **/
 
@@ -67,65 +53,21 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView  = findViewById<RecyclerView>(R.id.sampleList)
         val adapter = SampleListAdapter()
-
         adapter.submitList(
-            listOf(list01.get(0), list01.get(1), list01.get(2), list01.get(3))
-        )
-//        recyclerView.layoutManager = LinearLayoutManager(this)
-//        recyclerView.setHasFixedSize(true)
-//        recyclerView.adapter = adapter
+                listOf(list01.get(0), list01.get(1), list01.get(2), list01.get(3))
+            )
+            recyclerView.layoutManager = LinearLayoutManager(this)
+            recyclerView.setHasFixedSize(true)
+            recyclerView.adapter = adapter
 
-//        Handler(Looper.getMainLooper()).postDelayed(
-//            Runnable {
-//                adapter.submitList(list12)
-//        }, 2000)
-
-        println("using Elvis Operator: ")
-//        list12.getOrNull(6) ?: throw IllegalAccessException("IllegalAccessException: OutOfBound index")
-        println(list12.getOrNull(3) ?: list01[0])
-
-        // retrofit GET call check
-
-        diffUtilViewModel = ViewModelProvider(this).get(DiffsViewModel::class.java)
-        GlobalScope.launch {
+        /** call network using retrofit from View, for demo-purpose only */
+        GlobalScope.launch() {
             diffUtilViewModel.networkCall()
-            Timber.d("diffUtilViewModel.moviesResponse: ${diffUtilViewModel.moviesResponse.value}")
-        }
-        diffUtilViewModel.moviesResponse.observe(this, {
-            Toast.makeText(this, "Hi data from MainObserver ${it.body().toString()}", Toast.LENGTH_SHORT)
-                .show()
+          }
+
+        diffUtilViewModel.weatherResponse.observe(this, Observer{
+            Toast.makeText(baseContext, "weather-Info: ${it.body()}", Toast.LENGTH_LONG).show()
         })
-
-    }
-
-}
-
-
-
-// iteration
-fun iterateClasses(employees: List<Classes>, num:Int) {
-    employees.forEach {
-            e: Classes ->
-        println("here is the class list: ${e}\t$num")
     }
 }
 
-fun count100With():String {
-    return with(StringBuilder()) {
-        for(i in 1..99){
-            append(i)
-            append(", ")
-        }
-        append(100)
-        toString()
-    }
-}
-
-fun count10Apply() =
-    StringBuilder().apply() {
-        for(i in 1..9){
-            append(i)
-            append(", ")
-        }
-        append(10)
-    }.toString()
