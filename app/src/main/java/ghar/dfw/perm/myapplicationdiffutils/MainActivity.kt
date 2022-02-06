@@ -7,12 +7,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ghar.dfw.perm.myapplicationdiffutils.pure.utils.Classes
-import ghar.dfw.perm.myapplicationdiffutils.pure.utils.Util
 import ghar.dfw.perm.myapplicationdiffutils.view.DiffsViewModel
 import ghar.dfw.perm.myapplicationdiffutils.view.SampleListAdapter
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MainActivity() : AppCompatActivity() {
 
@@ -33,21 +29,6 @@ class MainActivity() : AppCompatActivity() {
 
         diffUtilViewModel = ViewModelProvider(this).get(DiffsViewModel::class.java)
 
-        /** ---------------------- Utils ---------------------------- **/
-        /** --------------------------------------------------------- **/
-        val util = Util()
-        val accumList = util.getCompositeList(list01, list12)
-        for(item in accumList){
-            println("accumulated list: $item")
-        }
-        val employees = listOf(
-            Classes("JJ", "Black", 2006),
-            Classes("LM", "White", 2009),
-            Classes("LM1", "White1", 2019)
-        )
-        /** --------------------------------------------------------- **/
-        /** ---------------------Utils END HERE  -------------------- **/
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -59,11 +40,6 @@ class MainActivity() : AppCompatActivity() {
             recyclerView.layoutManager = LinearLayoutManager(this)
             recyclerView.setHasFixedSize(true)
             recyclerView.adapter = adapter
-
-        /** call network using retrofit from View, for demo-purpose only */
-        GlobalScope.launch() {
-            diffUtilViewModel.networkCall()
-          }
 
         diffUtilViewModel.weatherResponse.observe(this, Observer{
             Toast.makeText(baseContext, "weather-Info: ${it.body()}", Toast.LENGTH_LONG).show()
