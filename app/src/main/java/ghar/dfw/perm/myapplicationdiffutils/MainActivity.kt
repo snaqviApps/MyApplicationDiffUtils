@@ -2,16 +2,21 @@ package ghar.dfw.perm.myapplicationdiffutils
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ghar.dfw.perm.myapplicationdiffutils.di.DaggerWeatherGraph
+import ghar.dfw.perm.myapplicationdiffutils.repo.WeatherRepository
 import ghar.dfw.perm.myapplicationdiffutils.view.DiffsViewModel
 import ghar.dfw.perm.myapplicationdiffutils.view.SampleListAdapter
+import timber.log.Timber
 
 class MainActivity() : AppCompatActivity() {
 
+    private lateinit var weatherComponent: DiffsViewModel
     private lateinit var diffUtilViewModel: DiffsViewModel
 
     private val list01 = listOf(
@@ -41,8 +46,9 @@ class MainActivity() : AppCompatActivity() {
             recyclerView.setHasFixedSize(true)
             recyclerView.adapter = adapter
 
-        diffUtilViewModel.weatherResponse.observe(this, Observer{
-            Toast.makeText(baseContext, "weather-Info: ${it.body()}", Toast.LENGTH_LONG).show()
+        weatherComponent = DaggerWeatherGraph.builder().build().getWeatherData()
+        weatherComponent.getWeatherInfo().observe(this, Observer {
+            Toast.makeText(baseContext, "weather-Info-daggered: ${it.body()}", Toast.LENGTH_LONG).show()
         })
     }
 }

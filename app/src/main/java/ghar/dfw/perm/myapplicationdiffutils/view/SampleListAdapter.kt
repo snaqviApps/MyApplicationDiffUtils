@@ -15,9 +15,8 @@ import ghar.dfw.perm.myapplicationdiffutils.R
 class SampleListAdapter : ListAdapter<SampleListItem, SampleListAdapter.SampleListViewHolder>
     (SampleDiffUtil()) {
 
-    val weatherInfo = DiffsViewModel().weatherResponse.value?.body()            // get Data
-    val location = weatherInfo?.location
-
+    val weatherInfo = DiffsViewModel().getWeatherInfo().value?.body()            // get Data
+    val location = weatherInfo?.current
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SampleListViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_view, parent, false)
         return SampleListViewHolder(itemView)
@@ -25,7 +24,7 @@ class SampleListAdapter : ListAdapter<SampleListItem, SampleListAdapter.SampleLi
 
     override fun onBindViewHolder(holder: SampleListViewHolder, position: Int) {
         var sampleItem = getItem(position)
-        holder.bind(sampleItem, this.location?.country)
+        holder.bind(sampleItem, this.location?.condition?.text)
 //        holder.bind(movieItem)
 
 //        holder.name.text = movieItem.backdrop_path

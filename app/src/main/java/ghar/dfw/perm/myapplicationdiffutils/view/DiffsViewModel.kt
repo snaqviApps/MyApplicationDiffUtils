@@ -1,46 +1,34 @@
 package ghar.dfw.perm.myapplicationdiffutils.view
 
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ghar.dfw.perm.myapplicationdiffutils.BuildConfig
-import ghar.dfw.perm.myapplicationdiffutils.api.WeatherApi
+import dagger.Module
+import dagger.Provides
 import ghar.dfw.perm.myapplicationdiffutils.model.data.WeatherInfo
-import kotlinx.coroutines.Dispatchers
+import ghar.dfw.perm.myapplicationdiffutils.repo.WeatherRepository
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Response
-import timber.log.Timber
+import javax.inject.Inject
 
-class DiffsViewModel : ViewModel() {
+@Module
+class DiffsViewModel @Inject constructor(
 
-    private val _weatherResponse = MutableLiveData<Response<WeatherInfo>>()
-    val weatherResponse: LiveData<Response<WeatherInfo>>
-        get() = _weatherResponse
+) :  ViewModel(
+
+) {
+
+    private val weatherRepo =  WeatherRepository()
 
     init {
         viewModelScope.launch {
-            networkCall()
+           weatherRepo.networkCall()
         }
     }
-    suspend fun networkCall() {
-        withContext(Dispatchers.IO) {
-            try {
-                _weatherResponse.postValue(
-                    WeatherApi.weatherApiService.getWeatherData(
-                        BuildConfig.WEATHER_API_KEY,
-                        location = "Dallas",
-                        aqiChoice = "yes"
-                    )
-                )
-                Log.v("weather-data:", "${_weatherResponse.value?.body()}")
-            } catch (exception: Exception) {
-                Timber.e("error getting movies-data from server: ${exception.printStackTrace()}")
-                exception.printStackTrace()
-            }
-        }
+
+    @Provides
+    fun getWeatherInfo(): LiveData<Response<WeatherInfo>> {
+        return weatherRepo.weatherResponse
     }
 }
