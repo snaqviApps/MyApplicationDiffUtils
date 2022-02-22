@@ -28,8 +28,7 @@ class WeatherRepository @Inject constructor(
                     WeatherApi.weatherApiService.getWeatherData(
                         BuildConfig.WEATHER_API_KEY,
                         location = "Dallas",
-                        aqiChoice = "yes"
-                    )
+                        aqiChoice = "yes")
                 )
                 println("weather-data-in network call: ${_weatherResponse.value?.body()}")
             } catch (exception: Exception) {

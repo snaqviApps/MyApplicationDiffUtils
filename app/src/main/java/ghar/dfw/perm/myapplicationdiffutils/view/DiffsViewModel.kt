@@ -19,8 +19,7 @@ class DiffsViewModel @Inject constructor(
 
 ) {
 
-    private val weatherRepo =  WeatherRepository()
-
+    private val weatherRepo = WeatherRepository()
     init {
         viewModelScope.launch {
            weatherRepo.networkCall()

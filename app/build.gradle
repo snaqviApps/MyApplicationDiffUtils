@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlinx-serialization'
 }
 
 def apikeyPropertiesFile = rootProject.file("apikey.properties")
@@ -28,6 +29,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    buildFeatures {
+        dataBinding true
+        viewBinding true
     }
     compileOptions {
 //        sourceCompatibility JavaVersion.VERSION_1_8
@@ -64,4 +69,7 @@ dependencies {
 
     implementation 'com.google.dagger:dagger:2.40.5'
     kapt 'com.google.dagger:dagger-compiler:2.40.5'
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2"
+
 }
