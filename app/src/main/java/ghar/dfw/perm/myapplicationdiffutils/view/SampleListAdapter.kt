@@ -44,7 +44,7 @@ class SampleListAdapter : ListAdapter<SampleListItem, SampleListAdapter.SampleLi
 
 }
 
-class SampleDiffUtil : DiffUtil.ItemCallback<SampleListItem>(){
+class SampleDiffUtil : DiffUtil.ItemCallback<SampleListItem>() {
     override fun areItemsTheSame(oldItem: SampleListItem, newItem: SampleListItem): Boolean {
         return oldItem.id == newItem.id     // item-entry
     }
