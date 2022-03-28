@@ -1,6 +1,7 @@
 package ghar.dfw.perm.myapplicationdiffutils.api
 
 
+import dagger.Module
 import ghar.dfw.perm.myapplicationdiffutils.model.data.WeatherInfo
 import retrofit2.Call
 import retrofit2.Response
@@ -8,6 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import javax.inject.Inject
 
 /**
  * Movie Api details:
@@ -19,7 +21,6 @@ import retrofit2.http.Query
  *
  * https://api.weatherapi.com/v1/current.jsonq=Dallas?key=7e5058209ebd4cda9eb65056220602&q=Dallas}
  */
-
 
 const val WEATHER_BASE_URL = "https://api.weatherapi.com/"
 const val WEATHER_END_POINT = "/v1/current.json"

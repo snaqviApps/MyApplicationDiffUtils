@@ -41,6 +41,7 @@ class MainActivity() : AppCompatActivity() {
         recyclerView.adapter = mainWeatherAdapter
 
         weatherComponent = DaggerWeatherGraph.builder().build().getWeatherData()
+
         weatherComponent.getWeatherInfo().observe(this, Observer { it: Response<WeatherInfo> ->
             mainWeatherAdapter.submitList(listOf(it.body()))
         })

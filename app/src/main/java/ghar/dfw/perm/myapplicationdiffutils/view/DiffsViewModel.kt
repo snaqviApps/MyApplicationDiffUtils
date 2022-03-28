@@ -13,12 +13,8 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @Module
-class DiffsViewModel @Inject constructor(
-
-) :  ViewModel(
-
-) {
-
+class DiffsViewModel @Inject constructor() :  ViewModel()
+{
     private val weatherRepo = WeatherRepository()
     init {
         viewModelScope.launch {
