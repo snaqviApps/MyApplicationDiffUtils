@@ -16,6 +16,7 @@ class SampleListAdapter : ListAdapter<SampleListItem, SampleListAdapter.SampleLi
     (SampleDiffUtil()) {
 
     val weatherInfo = DiffsViewModel().getWeatherInfo().value?.body()            // get Data
+//    val location = weatherInfo?.current
     val location = weatherInfo?.current
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SampleListViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_view, parent, false)

@@ -2,6 +2,8 @@ package ghar.dfw.perm.myapplicationdiffutils.repo
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import dagger.Module
+import dagger.Provides
 import ghar.dfw.perm.myapplicationdiffutils.BuildConfig
 import ghar.dfw.perm.myapplicationdiffutils.api.WeatherApi
 import ghar.dfw.perm.myapplicationdiffutils.model.data.WeatherInfo
@@ -9,11 +11,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 import timber.log.Timber
+import javax.inject.Inject
 
-class WeatherRepository
 
-//@Module
-//class WeatherRepository @Inject constructor()
+//class WeatherRepository
+
+@Module
+class WeatherRepository @Inject constructor()
 {
     private val _weatherResponse = MutableLiveData<Response<WeatherInfo>>()
     val weatherResponse: LiveData<Response<WeatherInfo>>
@@ -37,4 +41,9 @@ class WeatherRepository
         }
     }
 
+    @Provides
+    suspend fun injectsWeatherRepo()  = networkCall()
+
 }
+
+

@@ -1,15 +1,12 @@
 package ghar.dfw.perm.myapplicationdiffutils.api
 
 
-import dagger.Module
 import ghar.dfw.perm.myapplicationdiffutils.model.data.WeatherInfo
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import javax.inject.Inject
 
 /**
  * Movie Api details:
@@ -39,8 +36,11 @@ val wRetrofit: Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-object WeatherApi {
-    val weatherApiService: WeatherApiService by lazy {
-        wRetrofit.create(WeatherApiService::class.java)
+//object WeatherApi {
+open class WeatherApi {
+    companion object {
+        val weatherApiService: WeatherApiService by lazy {
+            wRetrofit.create(WeatherApiService::class.java)
+        }
     }
 }

@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.Module
 import dagger.Provides
+import ghar.dfw.perm.myapplicationdiffutils.di.DaggerWeatherGraph
 import ghar.dfw.perm.myapplicationdiffutils.model.data.WeatherInfo
-import ghar.dfw.perm.myapplicationdiffutils.repo.WeatherRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -15,10 +15,10 @@ import javax.inject.Inject
 @Module
 class DiffsViewModel @Inject constructor() :  ViewModel()
 {
-    private val weatherRepo = WeatherRepository()
+    private val weatherRepo = DaggerWeatherGraph.builder().build().providedWeatherRepo()
     init {
         viewModelScope.launch {
-           weatherRepo.networkCall()
+           weatherRepo.injectsWeatherRepo()
         }
     }
 
