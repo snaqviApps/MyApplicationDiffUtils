@@ -31,7 +31,7 @@ class MainActivity() : AppCompatActivity() {
         mainWeatherAdapter = WeatherInfoAdapter()
 
         binding.bViewModel = dViewModel
-        binding.lifecycleOwner = this               // making it lifecycle-aware, that allows the live-data to update automatically the data-binding-layouts
+        binding.lifecycleOwner = this       
         binding.weatherDataRecyclerView.adapter = mainWeatherAdapter
 
         mainActWeatherDataRecyclerView.layoutManager = LinearLayoutManager(this)
